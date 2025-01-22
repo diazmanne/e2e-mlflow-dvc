@@ -1,41 +1,30 @@
 import os
 import sys
 import logging
-from datetime import datetime
 
-# Define a detailed logging format to include more context
-logging_str = (
-    "[%(asctime)s: %(levelname)s: %(name)s: %(funcName)s: Line %(lineno)d]: %(message)s"
-)
 
-# Create a timestamp for log file versioning (optional)
-current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+# Example log output:
+# [2025-01-21 10:15:30,123: INFO: my_module: This is an example log message]
+logging_str = "[%(asctime)s: %(levelname)s: %(module)s: %(message)s]"
 
-# Define log directory and file path
+# Define the directory where logs will be stored
 log_dir = "logs"
-log_filepath = os.path.join(log_dir, f"running_logs_{current_time}.log")
 
-# Ensure the log directory exists
+# Define the full path to the log file
+log_filepath = os.path.join(log_dir, "running_logs.log")
+
+# Create the logs directory if it does not exist
 os.makedirs(log_dir, exist_ok=True)
 
-# Configure the logging system
+# Configure the logging settings
 logging.basicConfig(
-    level=logging.INFO,  # Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-    format=logging_str,  # Use the detailed logging format
+    level=logging.INFO,  # Set the logging level to INFO
+    format=logging_str,  # Use the custom logging format defined above
     handlers=[
-        logging.FileHandler(log_filepath),  # Log to a file
-        logging.StreamHandler(sys.stdout),  # Log to the console
-    ],
+        logging.FileHandler(log_filepath),  # Save logs to the specified file
+        logging.StreamHandler(sys.stdout)  # Output logs to the console (stdout)
+    ]
 )
 
-# Create a logger instance
+# Create a logger instance with a custom name
 logger = logging.getLogger("cnnClassifierLogger")
-
-# Example usage of the logger
-if __name__ == "__main__":
-    logger.info("Logging setup is complete.")
-    logger.debug("This is a DEBUG level message.")
-    logger.warning("This is a WARNING level message.")
-    logger.error("This is an ERROR level message.")
-    logger.critical("This is a CRITICAL level message.")
-

@@ -8,13 +8,14 @@ from box.exceptions import BoxValueError
 from pathlib import Path
 from ensure import ensure_annotations
 from typing import Any, List
+import logging
 from cnnClassifier import logger
 
 
-@ensure_annotations
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """
     Reads a YAML file and returns its contents as a ConfigBox object.
+    Automatically converts string paths to Path objects.
 
     Args:
         path_to_yaml (Path): Path to the YAML file.
@@ -32,7 +33,25 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
             if not content:
                 raise ValueError("YAML file is empty")
             logger.info(f"YAML file loaded successfully: {path_to_yaml}")
+
+            # Convert string paths to Path objects
+            def convert_to_path(value):
+                if isinstance(value, str):
+                    return Path(value)
+                return value
+
+            # Recursively convert any string paths to Path objects
+            def deep_convert(data):
+                if isinstance(data, dict):
+                    return {k: deep_convert(v) for k, v in data.items()}
+                elif isinstance(data, list):
+                    return [deep_convert(v) for v in data]
+                else:
+                    return convert_to_path(data)
+
+            content = deep_convert(content)
             return ConfigBox(content)
+
     except BoxValueError as e:
         logger.error(f"Error parsing YAML file: {e}")
         raise ValueError("YAML file is empty")
@@ -40,8 +59,6 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
         logger.error(f"An error occurred while reading YAML file: {e}")
         raise e
 
-
-@ensure_annotations
 def create_directories(paths: List[Path], verbose: bool = True):
     """
     Creates a list of directories.
@@ -49,14 +66,24 @@ def create_directories(paths: List[Path], verbose: bool = True):
     Args:
         paths (List[Path]): List of directory paths to create.
         verbose (bool): Whether to log the creation process. Default is True.
+
+    Raises:
+        TypeError: If `paths` is not a list or contains non-Path objects.
     """
+    if not isinstance(paths, list):
+        raise TypeError("Paths must be a list of Path objects.")
+
     for path in paths:
+        if not isinstance(path, Path):
+            raise TypeError(f"Invalid path type: {type(path)}. Must be 'Path'.")
+
+        # Create the directory, and avoid errors if it already exists
         os.makedirs(path, exist_ok=True)
+
+        # Log the creation of the directory if verbose is True
         if verbose:
             logger.info(f"Created directory at: {path}")
 
-
-@ensure_annotations
 def save_json(path: Path, data: dict):
     """
     Saves a dictionary as a JSON file.
@@ -159,7 +186,7 @@ def encode_image_to_base64(image_path: Path) -> str:
         str: Base64 encoded string of the image.
     """
     with open(image_path, "rb") as f:
-        encoded_string = base64.b64encode(f.read()).decode('utf-8')
+        encoded_string = base64.b64encode(f.read()).decode("utf-8")
     logger.info(f"Image encoded to Base64 from: {image_path}")
     return encoded_string
 

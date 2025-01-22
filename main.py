@@ -1,3 +1,3 @@
-from cnnClassifier import logger 
+from cnnClassifier import logger
 
-logger.info("CNN-CLASSIFIER")
+logger.info("This is an INFO log for testing.")
