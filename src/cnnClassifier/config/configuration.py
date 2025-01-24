@@ -2,8 +2,9 @@ from cnnClassifier.constants import *
 from cnnClassifier.utils.common import read_yaml, create_directories
 from cnnClassifier.entity.config_entity import (DataIngestionConfig)
 from cnnClassifier.entity.config_entity import (PrepareBaseModelConfig)
+from cnnClassifier.entity.config_entity import (TrainingConfig)
 from pathlib import Path
-
+import os 
 
 
 class ConfigurationManager:
@@ -48,3 +49,28 @@ class ConfigurationManager:
             params_classes=self.params["CLASSES"]
         )
         return prepare_base_model_config
+
+        
+    def get_training_config(self) -> TrainingConfig:
+        training = self.config["training"]
+        prepare_base_model = self.config["prepare_base_model"]
+        params = self.params
+
+        # Provide default values for paths
+        trained_model_path = training.get("trained_model_path", "artifacts/training/trained_model.h5")
+        updated_base_model_path = prepare_base_model.get("updated_base_model_path", "artifacts/prepare_base_model/updated_base_model.h5")
+        training_data = os.path.join(self.config["data_ingestion"]["unzip_dir"], "Chest-CT-Scan-data")
+        
+        create_directories([training["root_dir"]])
+
+        training_config = TrainingConfig(
+            root_dir=Path(training["root_dir"]),
+            trained_model_path=Path(trained_model_path),
+            updated_base_model_path=Path(updated_base_model_path),
+            training_data=Path(training_data),
+            params_epochs=params["EPOCHS"],
+            params_batch_size=params["BATCH_SIZE"],
+            params_is_augmentation=params["AUGMENTATION"],
+            params_image_size=params["IMAGE_SIZE"]
+        )
+        return training_config        
