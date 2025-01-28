@@ -1,8 +1,9 @@
 from cnnClassifier.constants import *
-from cnnClassifier.utils.common import read_yaml, create_directories
+from cnnClassifier.utils.common import read_yaml, create_directories, save_json
 from cnnClassifier.entity.config_entity import (DataIngestionConfig)
 from cnnClassifier.entity.config_entity import (PrepareBaseModelConfig)
 from cnnClassifier.entity.config_entity import (TrainingConfig)
+from cnnClassifier.entity.config_entity import (EvaluationConfig)
 from pathlib import Path
 import os 
 
@@ -12,6 +13,10 @@ class ConfigurationManager:
         self.config = read_yaml(config_filepath)
         self.params = read_yaml(params_filepath)
 
+        # Update paths to match actual data location
+        self.config["evaluation"]["training_data_path"] = "artifacts/data_ingestion/Chest-CT-Scan-data"
+        self.config["evaluation"]["test_data_path"] = "artifacts/data_ingestion/Chest-CT-Scan-data"
+        
         # Now create the directories using the correct Path type
         create_directories([self.config.artifacts_root])
 
@@ -73,4 +78,18 @@ class ConfigurationManager:
             params_is_augmentation=params["AUGMENTATION"],
             params_image_size=params["IMAGE_SIZE"]
         )
-        return training_config        
+        return training_config
+
+
+    def get_evaluation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+                path_of_model=Path(self.config["evaluation"]["trained_model_path"]),
+                training_data=Path(self.config["evaluation"]["training_data_path"]),
+                test_data=Path(self.config["evaluation"]["test_data_path"]),
+                mlflow_uri=self.config["mlflow_uri"],
+                all_params=self.params,
+                params_image_size=self.params["IMAGE_SIZE"],
+                params_batch_size=self.params["BATCH_SIZE"]
+                )
+        return eval_config
+
