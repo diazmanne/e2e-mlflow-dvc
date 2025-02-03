@@ -8,9 +8,12 @@ from cnnClassifier.utils.common import save_json
 from cnnClassifier.utils.common import create_directories
 from cnnClassifier.utils.common import read_yaml
 from cnnClassifier.entity.config_entity import EvaluationConfig
-
+import os
 import mlflow.tensorflow
 
+os.environ["MLFLOW_TRACKING_URI"]="https://dagshub.com/diazmanne/e2e-mlflow-dvc.mlflow"
+os.environ["MLFLOW_TRACKING_USERNAME"]="diazmanne"
+os.environ["MLFLOW_TRACKING_PASSWORD"]="f4e87115c3d98a2ef151c0469443be9738fa35ff"
 
 class Evaluation:
     def __init__(self, config: EvaluationConfig):
