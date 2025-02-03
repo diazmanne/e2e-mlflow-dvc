@@ -54,6 +54,80 @@ Step 5 :
 
 
 
-
+here is my project structure /
+├── artifacts/
+│   ├── data_ingestion/
+│   │   ├── Chest-CT-Scan-data/
+│   │   └── Chest-CT-Scan-data.zip
+│   ├── prepare_base_model/
+│   │   ├── base_model.h5
+│   │   └── base_model_updated.h5
+│   └── training/
+│       └── trained_model.keras
+├── config/
+│   └── config.yaml
+├── .github/
+│   └── workflows/
+│       └── .gitkeep
+├── logs/
+│   └── running_logs.log
+├── research/
+│   ├── .ipynb_checkpoints/
+│   │   ├── 01_data_ingestion-checkpoint.ipynb
+│   │   ├── 02_prepare_base_model-checkpoint.ipynb
+│   │   ├── 03_model_trainer-checkpoint.ipynb
+│   │   ├── 03_moel_trainer-checkpoint.ipynb
+│   │   ├── 04_model_evaluation-checkpoint.ipynb
+│   │   ├── trails-checkpoint
+│   │   └── trails-checkpoint.ipynb
+│   ├── logs/
+│   │   ├── running_logs_2025-01-20_16-49-54.log
+│   │   ├── running_logs_2025-01-20_19-33-29.log
+│   │   └── running_logs.log
+│   ├── 01_data_ingestion.ipynb
+│   ├── 02_prepare_base_model.ipynb
+│   ├── 03_model_trainer.ipynb
+│   ├── 04_model_evaluation.ipynb
+│   └── trails.ipynb
+├── src/
+│   └── cnnClassifier
+├── components
+│   ├── data_ingestion.py
+│   ├── __init__.py
+│   ├── model_evaluation_mlflow.py
+│   ├── model_trainer.py
+│   └── prepare_base_model.py
+├── config
+│   ├── configuration_0.py
+│   ├── configuration.py
+│   └── __init__.py
+├── constants
+│   └── __init__.py
+├── entity
+│   ├── config_entity.py
+│   └── __init__.py
+├── __init__.py
+├── pipeline
+│   ├── __init__.py
+│   ├── stage_01_data_ingestion.py
+│   ├── stage_02_prepare_base_model.py
+│   ├── stage_03_model_trainer.py
+│   └── stage_04_model_evaluation.py
+└── utils
+    ├── common.py
+    └── __init__.py├── templates/
+│   └── index.html
+├── .dvcignore
+├── dvc.yaml
+├── .gitignore
+├── main.py
+├── params.yaml
+├── params.yaml.dvc
+├── README.md
+├── .README.md.swp
+├── requirements.txt
+├── scores.json
+├── setup.py
+└── template.py
 
 
