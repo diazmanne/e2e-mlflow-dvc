@@ -1,107 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chest Cancer Classification</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #0d6efd;
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #f8f9fa;
-            --border-color: #333;
-        }
-        
-        body {
-            background: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Roboto', sans-serif;
-            min-height: 100vh;
-        }
-
-        .upload-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: var(--card-bg);
-            border-radius: 1rem;
-            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
-        }
-
-        .preview-box {
-            border: 2px dashed var(--primary-color);
-            border-radius: 1rem;
-            height: 300px;
-            background: var(--card-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .result-card {
-            height: 300px;
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            background: var(--card-bg);
-            overflow: auto;
-            padding: 1rem;
-        }
-
-        .btn {
-            border-radius: 0.5rem;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chest Cancer Classification</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <!-- Google Fonts: Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-color: #BB86FC;      /* Purple accent for titles and buttons */
+      --background-color: #121212;     /* Dark background */
+      --card-bg: #1E1E1E;              /* Dark surface for containers */
+      --text-color: #ffffff;           /* Light text color */
+      --border-color: #333333;
+    }
+    
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      font-family: 'Roboto', sans-serif;
+      min-height: 100vh;
+    }
+    
+    .upload-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: 1rem;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+    }
+    
+    .preview-box {
+      border: 2px dashed var(--primary-color);
+      border-radius: 1rem;
+      height: 300px;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    
+    .result-card {
+      height: 300px;
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      background: var(--card-bg);
+      overflow: auto;
+      padding: 1rem;
+    }
+    
+    #loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(18, 18, 18, 0.9);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .spinner {
+      width: 3rem;
+      height: 3rem;
+    }
+    
+    /* Replace the logo image with a text title at the bottom right */
+    .brand-title {
+      position: absolute;
+      right: 30px;
+      bottom: 30px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: var(--primary-color);
+    }
+    
+    /* Additional adjustments for buttons and form elements */
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+      color: var(--background-color);
+    }
+    
+    .btn-success {
+      background-color: #03DAC6; /* Teal accent */
+      border-color: #03DAC6;
+      color: var(--background-color);
+    }
+  </style>
 </head>
 <body>
-    <div class="upload-container">
-        <h1 class="text-center mb-5" style="color: var(--primary-color);">
-            <i class="bi bi-lungs"></i> Chest Cancer Classification
-        </h1>
-
-        <div class="row g-4">
-            <!-- Image Upload Section -->
-            <div class="col-lg-6">
-                <div class="preview-box">
-                    NTYDO TECHNOLOGY
-                </div>
-                
-                <div class="d-flex gap-3 mt-4 justify-content-center">
-                    <input type="file" id="fileinput" class="d-none">
-                    <button class="btn btn-primary px-4" onclick="document.getElementById('fileinput').click()">
-                        <i class="bi bi-upload me-2"></i>Upload Image
-                    </button>
-                    <button id="send" class="btn btn-success px-4">
-                        <i class="bi bi-play-fill me-2"></i>Analyze
-                    </button>
-                </div>
-            </div>
-
-            <!-- Results Section -->
-            <div class="col-lg-6">
-                <h5 class="mb-3" style="color: var(--primary-color);">
-                    <i class="bi bi-clipboard-data me-2"></i>Analysis Results
-                </h5>
-                
-                <div class="result-card">
-                    <pre id="jsonResult" class="m-0"></pre>
-                </div>
-                
-                <div class="alert alert-info mt-3">
-                    <i class="bi bi-info-circle me-2"></i>
-                    Upload a chest X-ray image to analyze for potential adenocarcinoma cancer.
-                </div>
-            </div>
+  <div class="upload-container">
+    <h1 class="text-center mb-5" style="color: var(--primary-color);">
+      <i class="bi bi-lungs"></i> Chest Cancer Classification
+    </h1>
+  
+    <div class="row g-4">
+      <!-- Image Upload Section -->
+      <div class="col-lg-6">
+        <div class="preview-box d-flex align-items-center justify-content-center position-relative">
+          <video class="w-100 h-100 object-fit-cover rounded" autoplay id="video"></video>
+          <img src="" id="photo" class="position-absolute w-100 h-100 d-none">
         </div>
+  
+        <div class="d-flex gap-3 mt-4 justify-content-center">
+          <input type="file" id="fileinput" class="d-none">
+          <button class="btn btn-primary px-4" onclick="document.getElementById('fileinput').click()">
+            <i class="bi bi-upload me-2"></i>Upload Image
+          </button>
+          <button id="send" class="btn btn-success px-4">
+            <i class="bi bi-play-fill me-2"></i>Analyze
+          </button>
+        </div>
+      </div>
+  
+      <!-- Results Section -->
+      <div class="col-lg-6">
+        <h5 class="mb-3" style="color: var(--primary-color);">
+          <i class="bi bi-clipboard-data me-2"></i>Analysis Results
+        </h5>
+  
+        <div class="result-card mb-3 p-3">
+          <pre id="jsonResult" class="m-0"></pre>
+        </div>
+  
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle me-2"></i>
+          Upload a chest X-ray image to analyze for potential adenocarcinoma.
+        </div>
+      </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  </div>
+  
+  <!-- Brand title replacing the logo image -->
+  <div class="brand-title">NTYDO TECHNOLOGY</div>
+  
+  <!-- Loading Spinner -->
+  <div id="loading" class="d-none">
+    <div class="spinner-border text-primary spinner" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <!-- JS Libraries -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    var baseData = "";
+  
+    function sendRequest(base64Data) {
+      $('#loading').removeClass('d-none');
+  
+      $.ajax({
+        url: '../predict', // Ensure this matches the Flask endpoint
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ image: base64Data }),
+        success: function(res) {
+          $('#jsonResult').html(JSON.stringify(res[0], null, 2));
+          $('#loading').addClass('d-none');
+        },
+        error: function() {
+          $('#loading').addClass('d-none');
+          alert('Error processing request');
+        }
+      });
+    }
+  
+    $(document).ready(function() {
+      $('#send').click(() => sendRequest(baseData));
+  
+      $('#fileinput').change(function() {
+        if (this.files && this.files[0]) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            $('#photo').attr('src', e.target.result).removeClass('d-none');
+            $('#video').addClass('d-none');
+  
+            const img = new Image();
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              canvas.width = img.width;
+              canvas.height = img.height;
+              canvas.getContext('2d').drawImage(img, 0, 0);
+              baseData = canvas.toDataURL('image/jpeg').split(',')[1];
+            };
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(this.files[0]);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
