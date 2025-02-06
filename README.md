@@ -131,3 +131,12 @@ here is my project structure /
 └── template.py
 
 
+
+
+app
+
+http://127.0.0.1:8080/train
+http://127.0.0.1:8080
+
+ECR
+299819601507.dkr.ecr.us-east-2.amazonaws.com/chestdetect
